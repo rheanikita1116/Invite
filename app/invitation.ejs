@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Vigyaanrang Invitation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #43cea2;
+      --accent-color: #40c3c5;
+      --background-color: #ffcce6;
+      --card-bg-color: rgba(255, 235, 245, 0.8);
+      --details-bg-color: rgba(255, 220, 235, 0.8);
+      --text-color: #333;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--background-color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 10px;
+      color: var(--text-color);
+    }
+
+    .invitation-card {
+      background: var(--card-bg-color);
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      padding: 30px 20px;
+      text-align: center;
+      width: 90%;
+      max-width: 400px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bubble {
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      opacity: 0.5;
+      z-index: 0;
+    }
+
+    .bubble-1 {
+      background: linear-gradient(to bottom right, var(--accent-color), #a0e8e8);
+      top: -40px;
+      left: -40px;
+    }
+
+    h2 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: #333;
+      position: relative;
+      z-index: 1;
+      text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.8);
+    }
+
+    .subtitle {
+      font-size: 22px;
+      margin-bottom: 20px;
+      color: #333;
+      position: relative;
+      z-index: 1;
+    }
+
+    .divider {
+      width: 80px;
+      height: 3px;
+      background: var(--accent-color);
+      margin: 15px auto;
+      border-radius: 3px;
+    }
+
+    p {
+      margin-bottom: 12px;
+      font-size: 16px;
+      line-height: 1.5;
+      position: relative;
+      z-index: 1;
+    }
+
+    .event-details {
+      background: var(--details-bg-color);
+      border-radius: 12px;
+      padding: 15px;
+      margin: 20px 0;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      text-align: left;
+    }
+
+    .detail-label {
+      font-weight: 600;
+      width: 30%;
+    }
+
+    .detail-value {
+      width: 70%;
+      text-align: right;
+    }
+
+    .signature {
+      margin-top: 25px;
+      border-radius: 12px;
+      background: white;
+      padding: 15px;
+      display: inline-block;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      max-width: 80%;
+    }
+
+    .signature img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    @media (max-height: 600px) {
+      .invitation-card {
+        padding: 20px 15px;
+      }
+      
+      h2 {
+        font-size: 24px;
+        margin-bottom: 5px;
+      }
+      
+      .subtitle {
+        font-size: 18px;
+        margin-bottom: 10px;
+      }
+      
+      .divider {
+        margin: 10px auto;
+      }
+      
+      p {
+        margin-bottom: 8px;
+        font-size: 14px;
+      }
+      
+      .event-details {
+        padding: 10px;
+        margin: 15px 0;
+      }
+      
+      .signature {
+        margin-top: 15px;
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="invitation-card">
+    <div class="bubble bubble-1"></div>
+    
+    <h2>Vigyaanrang Fest</h2>
+    <div class="subtitle">Invitation</div>
+    <div class="divider"></div>
+    
+    <p>Dear <%= userName %>,</p>
+    <p>You're invited to a day full of science and innovation!</p>
+    
+    <div class="event-details">
+      <div class="detail-row">
+        <div class="detail-label">Date:</div>
+        <div class="detail-value">10th April 2025</div>
+      </div>
+      <div class="detail-row">
+        <div class="detail-label">Venue:</div>
+        <div class="detail-value">ABC Auditorium</div>
+      </div>
+      <div class="detail-row">
+        <div class="detail-label">Time:</div>
+        <div class="detail-value">9:00 AM - 5:00 PM</div>
+      </div>
+    </div>
+    
+    <div class="signature">
+      <img src="<%= userSignature %>" alt="User Signature" width="200">
+    </div>
+  </div>
+</body>
+</html>

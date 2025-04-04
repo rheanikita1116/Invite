@@ -1,0 +1,14 @@
+{
+    "version": 2,
+    "builds": [
+      {
+        "src": "index.js",
+        "use": "@vercel/node"
+      }
+    ],
+    "routes": [
+      { "src": "/style.css", "dest": "/public/css/style.css" },
+      { "src": "/(.*)", "dest": "/index.js" }
+    ]
+  }
+  
