@@ -6,9 +6,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <script src="/html2canvas.min.js"></script>
+  <script src="/html2pdf.bundle.min.js"></script>
   <style>
     :root {
-      --primary-color: #43cea2;
+      --primary-color: #fc88a9;
       --accent-color: #40c3c5;
       --background-color: #ffcce6;
       --card-bg-color: rgba(255, 235, 245, 0.8);
@@ -25,12 +27,52 @@
     body {
       font-family: 'Poppins', sans-serif;
       background-color: var(--background-color);
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cpath d='M30 0L0 30l30 30 30-30L30 0zm0 10l20 20-20 20-20-20 20-20z' fill='%23ff99cc' fill-opacity='0.2'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-position: center;
+      background-attachment: fixed;
       min-height: 100vh;
-      padding: 10px;
+      margin: 0;
+      padding: 20px;
       color: var(--text-color);
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cpath d='M20 0L0 20h40L20 0zm0 40L0 20h40L20 40z' fill='%23ff80bf' fill-opacity='0.15'/%3E%3C/svg%3E");
+      animation: floatingPattern 180s linear infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    @keyframes floatingPattern {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 20px 0 100px 0;
     }
 
     .invitation-card {
@@ -43,21 +85,8 @@
       max-width: 400px;
       position: relative;
       overflow: hidden;
-    }
-
-    .bubble {
-      position: absolute;
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      opacity: 0.5;
-      z-index: 0;
-    }
-
-    .bubble-1 {
-      background: linear-gradient(to bottom right, var(--accent-color), #a0e8e8);
-      top: -40px;
-      left: -40px;
+      margin: 20px auto;
+      backdrop-filter: blur(5px);
     }
 
     h2 {
@@ -122,84 +151,102 @@
     .signature {
       margin-top: 25px;
       border-radius: 12px;
-      background: white;
+      background: rgba(255, 255, 255, 0.9) !important;
       padding: 15px;
       display: inline-block;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
       max-width: 80%;
+      position: relative;
+      z-index: 2;
     }
 
     .signature img {
       max-width: 100%;
       height: auto;
       display: block;
+      position: relative;
+      z-index: 2;
     }
 
-    @media (max-height: 600px) {
+    .download-btn {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1000;
+      white-space: nowrap;
+    }
+
+    .download-btn:hover {
+      transform: translateX(-50%) scale(1.05);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    @media (max-height: 700px) {
+      body {
+        padding: 10px;
+      }
+      
+      .container {
+        padding: 10px 0 80px 0;
+      }
+      
       .invitation-card {
         padding: 20px 15px;
-      }
-      
-      h2 {
-        font-size: 24px;
-        margin-bottom: 5px;
-      }
-      
-      .subtitle {
-        font-size: 18px;
-        margin-bottom: 10px;
-      }
-      
-      .divider {
         margin: 10px auto;
       }
       
-      p {
-        margin-bottom: 8px;
+      .download-btn {
+        padding: 12px 24px;
         font-size: 14px;
-      }
-      
-      .event-details {
-        padding: 10px;
-        margin: 15px 0;
-      }
-      
-      .signature {
-        margin-top: 15px;
-        padding: 10px;
+        bottom: 15px;
       }
     }
   </style>
 </head>
 <body>
-  <div class="invitation-card">
-    <div class="bubble bubble-1"></div>
-    
-    <h2>Vigyaanrang Fest</h2>
-    <div class="subtitle">Invitation</div>
-    <div class="divider"></div>
-    
-    <p>Dear <%= userName %>,</p>
-    <p>You're invited to a day full of science and innovation!</p>
-    
-    <div class="event-details">
-      <div class="detail-row">
-        <div class="detail-label">Date:</div>
-        <div class="detail-value">10th April 2025</div>
+  <div class="container">
+    <div class="invitation-card">
+      <h2>Vigyaanrang 2025</h2>
+      <div class="subtitle">Invitation</div>
+      <div class="divider"></div>
+      
+      <p>Dear <span class="user-name"><%= userName %></span>,</p>
+      <p>With great excitement and deep respect, we would like to extend a heartfelt invitation to you for our upcoming Vigyaanrang Fest. Your guidance and dedication have always inspired us, and it would mean the world to us to have your presence as we celebrate the spirit of science, creativity, and collaboration.</p>
+      
+      <div class="event-details">
+        <div class="detail-row">
+          <div class="detail-label">Date:</div>
+          <div class="detail-value">10th April 2025</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">Venue:</div>
+          <div class="detail-value">ABC Auditorium</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">Time:</div>
+          <div class="detail-value">9:00 AM - 5:00 PM</div>
+        </div>
       </div>
-      <div class="detail-row">
-        <div class="detail-label">Venue:</div>
-        <div class="detail-value">ABC Auditorium</div>
-      </div>
-      <div class="detail-row">
-        <div class="detail-label">Time:</div>
-        <div class="detail-value">9:00 AM - 5:00 PM</div>
+
+      <div class="signature">
+        <img src="<%= userSignature %>" alt="Signature">
       </div>
     </div>
-    
-    <div class="signature">
-      <img src="<%= userSignature %>" alt="User Signature" width="200">
-    </div>
+
+    <button class="download-btn" onclick="downloadInvitation()">Download Invitation</button>
   </div>
+
+  <script src="js/app.js"></script>
 </body>
 </html>
