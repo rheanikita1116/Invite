@@ -97,14 +97,18 @@ async function downloadInvitation() {
         downloadBtn.textContent = 'Preparing...';
         downloadBtn.disabled = true;
 
-        // Create PDF
+        // Determine orientation based on screen width
+        const isMobile = window.innerWidth < 768;
+        const orientation = isMobile ? 'portrait' : 'landscape';
+
+        // Create PDF with selected orientation
         const pdf = new jsPDF({
-            orientation: 'landscape',
+            orientation: orientation,
             unit: 'px',
             format: 'letter'
         });
 
-        // Convert to canvas
+        // Convert element to canvas
         const canvas = await html2canvas(element, {
             scale: 1.2,
             useCORS: true,
@@ -112,31 +116,29 @@ async function downloadInvitation() {
             backgroundColor: '#ffffff'
         });
 
-        // Calculate dimensions
-        const imgWidth = 792; // 11 inches in pixels
-        const imgHeight = 612; // 8.5 inches in pixels
+        // Set page dimensions based on orientation
+        const pageWidth = orientation === 'portrait' ? 612 : 792;
+        const pageHeight = orientation === 'portrait' ? 792 : 612;
+
+        // Scale to fit better
         const aspectRatio = canvas.height / canvas.width;
-        
-        // Scale down to fit better
-        let pdfWidth = imgWidth * 0.5; // Reduced scaling
+        let pdfWidth = pageWidth * 0.6;
         let pdfHeight = pdfWidth * aspectRatio;
-        
-        if (pdfHeight > imgHeight * 0.5) {
-            pdfHeight = imgHeight * 0.5;
+
+        if (pdfHeight > pageHeight * 0.6) {
+            pdfHeight = pageHeight * 0.6;
             pdfWidth = pdfHeight / aspectRatio;
         }
-        
-        // Calculate centering
-        const x = (imgWidth - pdfWidth) / 2;
-        const y = (imgHeight - pdfHeight) / 2;
 
-        // Add image to PDF
+        // Position based on orientation
+        const x = orientation === 'portrait' ? 90 : 60;
+        const y = 50;
+
         const imgData = canvas.toDataURL('image/jpeg', 1.0);
-        pdf.addImage(imgData, 'JPEG', 100, 80, pdfWidth, pdfHeight);
-        
-        // Save PDF
+        pdf.addImage(imgData, 'JPEG', x, y, pdfWidth, pdfHeight);
+
         pdf.save(`vigyaanrang-invitation-${userName}.pdf`);
-        
+
         downloadBtn.textContent = originalBtnText;
         downloadBtn.disabled = false;
     } catch (error) {
