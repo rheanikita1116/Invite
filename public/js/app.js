@@ -79,7 +79,7 @@ async function downloadInvitation() {
     const wrapper = document.createElement('div');
     wrapper.style.cssText = `
       background-color: #ffffff;
-      padding: 100px 40px 60px 40px;
+      padding: 40px 40px 60px 40px;
       display: flex;
       justify-content: center;
       align-items: flex-start;
