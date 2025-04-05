@@ -12,15 +12,20 @@ function clearCanvas() {
 
 window.onload = function () {
     const canvas = document.getElementById("signatureCanvas");
+    if (!canvas) return; // Skip if not on signature page
+    
     const ctx = canvas.getContext("2d");
+    ctx.strokeStyle = '#7b5e3c'; // Set signature color to match theme
+    ctx.lineWidth = 2;
     let isDrawing = false;
 
-    // Fix for high-DPI (retina) screens
     function resizeCanvas() {
         const ratio = window.devicePixelRatio || 1;
         canvas.width = canvas.offsetWidth * ratio;
         canvas.height = canvas.offsetHeight * ratio;
         canvas.getContext("2d").scale(ratio, ratio);
+        ctx.strokeStyle = '#7b5e3c';
+        ctx.lineWidth = 2;
     }
 
     resizeCanvas();
@@ -71,93 +76,131 @@ window.onload = function () {
 
 async function downloadInvitation() {
     const element = document.querySelector('.invitation-card');
-    // Get username from the rendered page
-    const userNameElement = document.querySelector('.user-name');
-    const userName = userNameElement ? userNameElement.textContent.trim() : 'user';
+    const downloadBtn = document.querySelector('button');
+    const originalBtnText = downloadBtn.textContent;
     
-    // Create a simple wrapper for PDF
+    // Get username from the hidden div
+    const userNameElement = document.querySelector('.user-name');
+    const userName = userNameElement ? userNameElement.textContent.trim() : 'guest';
+    
+    // Create a wrapper for PDF
     const wrapper = document.createElement('div');
     wrapper.style.cssText = `
-      background-color: #ffffff;
-      padding: 40px 40px 60px 40px;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
+        background-color: #ffffff;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 11in;
+        height: 8.5in;
     `;
     
     const clone = element.cloneNode(true);
-    
-    // Make the invitation card wider for PDF
     clone.style.cssText = `
-      background: rgba(255, 180, 210, 0.95);
-      border-radius: 20px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-      padding: 20px 30px;
-      text-align: center;
-      width: 100%;
-      max-width: 800px;
-      position: relative;
-      overflow: hidden;
-      margin: 0 auto 20px auto;
-      backdrop-filter: blur(5px);
+        background: #fff;
+        border-radius: 20px;
+        box-shadow: 0 10px 25px rgba(183, 140, 75, 0.15);
+        padding: 60px;
+        text-align: center;
+        width: 90%;
+        max-width: 1000px;
+        position: relative;
+        overflow: hidden;
+        margin: 0 auto;
+        border: 2px solid #d4b183;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        min-height: 7.5in;
     `;
     
-    // Adjust the event details to be more compact
-    const eventDetails = clone.querySelector('.event-details');
-    if (eventDetails) {
-      eventDetails.style.marginTop = '10px';
-      eventDetails.style.marginBottom = '10px';
-      eventDetails.style.padding = '10px';
+    // Adjust content spacing
+    const title = clone.querySelector('h2');
+    if (title) {
+        title.style.marginBottom = '40px';
+    }
+
+    const message = clone.querySelector('.message');
+    if (message) {
+        message.style.marginBottom = '40px';
+        message.style.fontSize = '24px';
+        message.style.lineHeight = '1.6';
+    }
+
+    const date = clone.querySelector('.date');
+    if (date) {
+        date.style.marginBottom = '20px';
+        date.style.fontSize = '22px';
+    }
+
+    const venue = clone.querySelector('.venue');
+    if (venue) {
+        venue.style.marginBottom = '40px';
+        venue.style.fontSize = '22px';
+    }
+
+    const closing = clone.querySelector('.closing');
+    if (closing) {
+        closing.style.marginBottom = '30px';
+        closing.style.fontSize = '20px';
+    }
+
+    const signatureLabel = clone.querySelector('.signature-label');
+    if (signatureLabel) {
+        signatureLabel.style.marginBottom = '20px';
+        signatureLabel.style.fontSize = '20px';
     }
     
-    // Reduce spacing between elements
-    const paragraphs = clone.querySelectorAll('p');
-    paragraphs.forEach(p => {
-      p.style.marginBottom = '8px';
-    });
+    // Hide the user-name div in the PDF
+    const hiddenName = clone.querySelector('.user-name');
+    if (hiddenName) {
+        hiddenName.remove();
+    }
     
     // Ensure signature background is solid
     const signature = clone.querySelector('.signature');
     if (signature) {
-      signature.style.background = '#ffffff';
-      signature.style.marginTop = '15px';
+        signature.style.background = '#ffffff';
+        signature.style.marginTop = '15px';
+        signature.style.border = '1px solid #d4b183';
+        signature.style.borderRadius = '8px';
+        signature.style.padding = '10px';
+        signature.style.width = '200px';
+        signature.style.margin = '0 auto';
     }
     
     wrapper.appendChild(clone);
     document.body.appendChild(wrapper);
 
     const opt = {
-      margin: 0,
-      filename: `vigyaanrang-invitation-${userName}.pdf`,
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { 
-        scale: 2,
-        backgroundColor: '#ffffff',
-        useCORS: true,
-        logging: true
-      },
-      jsPDF: { 
-        unit: 'in', 
-        format: [8.5, 11], // Standard letter size in portrait orientation
-        orientation: 'portrait' 
-      },
-      pagebreak: { mode: ['avoid-all'] }
+        margin: 0,
+        filename: `vigyaanrang-invitation-${userName}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { 
+            scale: 2,
+            backgroundColor: '#ffffff',
+            useCORS: true
+        },
+        jsPDF: { 
+            unit: 'in', 
+            format: 'letter',
+            orientation: 'landscape'
+        }
     };
 
     try {
-      const btn = document.querySelector('.download-btn');
-      btn.textContent = 'Preparing...';
-      btn.disabled = true;
-      
-      await html2pdf().set(opt).from(wrapper).save();
-      
-      document.body.removeChild(wrapper);
-      btn.textContent = 'Download Invitation';
-      btn.disabled = false;
+        downloadBtn.textContent = 'Preparing...';
+        downloadBtn.disabled = true;
+        
+        await html2pdf().set(opt).from(wrapper).save();
+        
+        downloadBtn.textContent = originalBtnText;
+        downloadBtn.disabled = false;
     } catch (error) {
-      console.error('Error generating PDF:', error);
-      document.body.removeChild(wrapper);
-      btn.textContent = 'Download Invitation';
-      btn.disabled = false;
+        console.error('Error generating PDF:', error);
+        downloadBtn.textContent = originalBtnText;
+        downloadBtn.disabled = false;
+    } finally {
+        document.body.removeChild(wrapper);
     }
 }

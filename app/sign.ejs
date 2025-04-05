@@ -1,20 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Signature</title>
+    <title>Add Your Signature</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Great+Vibes&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="sign-container wrapper">
-        <h2>Hello, <%= userName %> Sign Below:</h2>
-        <canvas id="signatureCanvas" width="300" height="150" style="border:1px solid black;"></canvas>
-        <form action="/submit-sign" method="POST">
-            <input type="hidden" id="signatureInput" name="signature">
-            <button type="submit" onclick="saveSignature()">Submit</button>
-            <button type="button" onclick="clearCanvas()">Clear</button>
-        </form>
+    <div class="signature-page">
+        <div class="card">
+            <h1>Add Your Signature</h1>
+            <p>Use your mouse or touch to sign below</p>
+            <canvas id="signatureCanvas" width="300" height="150"></canvas>
+            <form action="/submit-sign" method="POST">
+                <input type="hidden" id="signatureInput" name="signature">
+                <div class="buttons">
+                    <button type="button" class="btn secondary" onclick="clearCanvas()">Clear</button>
+                    <button type="submit" class="btn" onclick="saveSignature()">Continue</button>
+                </div>
+            </form>
+        </div>
     </div>
-
     <script src="js/app.js"></script>
 </body>
 </html>

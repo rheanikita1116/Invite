@@ -1,0 +1,118 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Great+Vibes&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Playfair Display', serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)),
+                url('/assets/background.jpg') no-repeat center center fixed;
+    background-size: cover;
+    padding: 20px;
+}
+
+.container {
+    background: white;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+}
+
+h1 {
+    color: #8B6B44;
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.subtitle {
+    color: #666;
+    margin-bottom: 30px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: inherit;
+}
+
+.btn {
+    background: #C4A484;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    background: #A88B6B;
+}
+
+#signatureCanvas {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin: 20px 0;
+    width: 100%;
+    height: 200px;
+    background: white;
+}
+
+.buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+/* Invitation Card Styles */
+.invitation-card {
+    background: white;
+    padding: 40px;
+    border-radius: 15px;
+    border: 1px solid #C4A484;
+    text-align: center;
+    width: 100%;
+    max-width: 600px;
+}
+
+.invitation-card h2 {
+    font-family: 'Great Vibes', cursive;
+    color: #5a4833;
+    font-size: 2.2rem;
+    margin-bottom: 30px;
+}
+
+.invitation-card .message {
+    color: #333;
+    line-height: 1.6;
+    margin: 20px 0;
+}
+
+.date, .venue {
+    color: #8B6B44;
+    margin: 15px 0;
+}
+
+.signature-image {
+    max-width: 200px;
+    margin: 20px auto;
+    display: block;
+}

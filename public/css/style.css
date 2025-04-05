@@ -1,235 +1,148 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Great+Vibes&display=swap');
+
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Playfair Display', serif;
+  background: linear-gradient(45deg, #f9e4b7, #fff6e6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-body {
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: linear-gradient(-45deg, #a18cd1, #fbc2eb, #fad0c4, #ff9a9e);
-    background-size: 400% 400%;
-    animation: moveBackground 15s ease infinite;
-    padding: 20px;
-    color: #333;
-}
-
-.wrapper {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    max-width: 600px;
-    gap: 20px;
-}
-
-.container, .sign-container, .card {
-    background: rgba(255, 255, 255, 0.25);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    padding: 40px;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15), 
-                0 1px 5px rgba(255, 255, 255, 0.1);
-    width: 100%;
-    max-width: 550px;
-    text-align: center;
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.container:hover, .sign-container:hover, .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2), 
-                0 1px 8px rgba(255, 255, 255, 0.15);
-}
-
-h2 {
-    color: #fff;
-    font-size: 1.8rem;
-    margin-bottom: 20px;
-    font-weight: 600;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    letter-spacing: 0.5px;
-}
-
-p {
-    color: #fff;
-    font-size: 1.4rem;
-    margin-bottom: 25px;
-    font-weight: 500;
-    line-height: 1.6;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-input[type="text"] {
-    padding: 16px;
-    width: 100%;
-    font-size: 18px;
-    border: none;
-    border-radius: 12px;
-    outline: none;
-    margin-bottom: 25px;
-    background: rgba(255, 255, 255, 0.9);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05), 
-                inset 0 2px 3px rgba(0, 0, 0, 0.05);
-    transition: all 0.3s ease;
-}
-
-input[type="text"]:focus {
-    background: #fff;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1), 
-                inset 0 2px 5px rgba(0, 0, 0, 0.05);
+/* Common styles */
+.card {
+  background: #fff;
+  padding: 40px 30px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(183, 140, 75, 0.15);
+  width: 90%;
+  border: 1px solid #d4b183;
 }
 
 button {
-    padding: 16px 28px;
-    font-size: 18px;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    background: linear-gradient(to right, #ff758c, #ff7eb3);
-    color: white;
-    margin: 10px;
-    transition: all 0.3s ease;
-    font-weight: 600;
-    box-shadow: 0 4px 15px rgba(255, 117, 140, 0.4);
-    position: relative;
-    overflow: hidden;
+  background-color: #b78c4b;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
 }
 
 button:hover {
-    background: linear-gradient(to right, #ff5470, #ff65a3);
-    box-shadow: 0 6px 20px rgba(255, 117, 140, 0.5);
-    transform: translateY(-2px);
+  background-color: #9e7637;
 }
 
-button:active {
-    transform: translateY(1px);
-    box-shadow: 0 2px 10px rgba(255, 117, 140, 0.3);
+/* Name page styles */
+.name-page {
+  text-align: center;
 }
 
-button::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 5px;
-    height: 5px;
-    background: rgba(255, 255, 255, 0.5);
-    opacity: 0;
-    border-radius: 100%;
-    transform: scale(1, 1) translate(-50%, -50%);
-    transform-origin: 50% 50%;
+.name-page .card {
+  max-width: 400px;
 }
 
-button:focus:not(:active)::after {
-    animation: ripple 1s ease-out;
+.name-page h1 {
+  font-size: 1.8rem;
+  color: #7b5e3c;
+  margin-bottom: 15px;
+}
+
+.name-page p {
+  color: #333;
+  font-size: 1rem;
+  margin-bottom: 20px;
+}
+
+.name-page input {
+  width: 90%;
+  padding: 10px;
+  border: 1px solid #d6c6b4;
+  border-radius: 8px;
+  font-size: 1rem;
+  margin-bottom: 15px;
+}
+
+/* Signature page styles */
+.signature-page {
+  text-align: center;
+}
+
+.signature-page .card {
+  max-width: 420px;
+}
+
+.signature-page h1 {
+  font-size: 1.8rem;
+  color: #7b5e3c;
+  margin-bottom: 15px;
+}
+
+.signature-page p {
+  color: #333;
+  font-size: 1rem;
+  margin-bottom: 20px;
 }
 
 canvas {
-    width: 100%;
-    max-width: 100%;
-    height: 300px;
-    border: 3px solid rgba(255, 255, 255, 0.6);
-    background-color: white;
-    border-radius: 16px;
-    margin-bottom: 20px;
-    touch-action: none;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
+  border: 2px solid #b78c4b;
+  border-radius: 8px;
+  background: #fff;
+  cursor: crosshair;
 }
 
-canvas:hover {
-    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
-    border-color: rgba(255, 255, 255, 0.8);
+.buttons {
+  margin-top: 20px;
 }
 
-.card {
-    padding: 35px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.buttons button {
+  margin: 0 10px;
 }
 
-.card img {
-    max-width: 100%;
-    border-radius: 16px;
-    margin-top: 25px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-    transition: transform 0.3s ease;
+/* Invitation page styles */
+.invitation-wrapper {
+  text-align: center;
+  padding: 40px;
 }
 
-.card img:hover {
-    transform: scale(1.02);
+.invitation-card {
+  background: #fff;
+  padding: 50px 40px;
+  border-radius: 20px;
+  max-width: 600px;
+  width: 90%;
+  box-shadow: 0 10px 25px rgba(183, 140, 75, 0.15);
+  border: 2px solid #d4b183;
 }
 
-@keyframes moveBackground {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+.invitation-card h2 {
+  font-family: 'Great Vibes', cursive;
+  font-size: 2.2rem;
+  color: #7b5e3c;
+  margin-bottom: 30px;
 }
 
-@keyframes ripple {
-    0% {
-        transform: scale(0, 0);
-        opacity: 1;
-    }
-    20% {
-        transform: scale(25, 25);
-        opacity: 1;
-    }
-    100% {
-        opacity: 0;
-        transform: scale(40, 40);
-    }
+.invitation-card .message {
+  font-size: 1.1rem;
+  color: #444;
+  margin: 20px 0;
+  line-height: 1.6;
 }
 
-@media (max-width: 768px) {
-    .container, .sign-container, .card {
-        padding: 30px;
-        max-width: 95%;
-    }
-
-    h2 {
-        font-size: 1.6rem;
-    }
-
-    p {
-        font-size: 1.2rem;
-    }
-
-    button {
-        font-size: 1rem;
-        padding: 14px 22px;
-    }
+.date, .venue, .closing, .signature-label {
+  font-size: 1rem;
+  color: #7b5e3c;
+  margin: 10px 0;
 }
 
-@media (max-width: 480px) {
-    .container, .sign-container, .card {
-        padding: 25px;
-    }
-
-    h2 {
-        font-size: 1.4rem;
-    }
-
-    p {
-        font-size: 1.1rem;
-        margin-bottom: 20px;
-    }
-
-    button {
-        font-size: 0.95rem;
-        padding: 12px 20px;
-        margin: 8px;
-    }
-
-    canvas {
-        height: 280px;
-    }
+.signature {
+  width: 180px;
+  height: auto;
+  margin-top: 15px;
+  border: 1px solid #d4b183;
+  border-radius: 8px;
+  padding: 10px;
+  background: #fff;
 }
