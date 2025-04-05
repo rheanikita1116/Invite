@@ -15,49 +15,60 @@ window.onload = function () {
     if (!canvas) return; // Skip if not on signature page
     
     const ctx = canvas.getContext("2d");
-    ctx.strokeStyle = '#7b5e3c'; // Set signature color to match theme
+    ctx.strokeStyle = '#7b5e3c';
     ctx.lineWidth = 2;
     let isDrawing = false;
+    let lastX = 0;
+    let lastY = 0;
 
-    function resizeCanvas() {
-        const ratio = window.devicePixelRatio || 1;
-        canvas.width = canvas.offsetWidth * ratio;
-        canvas.height = canvas.offsetHeight * ratio;
-        canvas.getContext("2d").scale(ratio, ratio);
+    function setCanvasSize() {
+        const rect = canvas.getBoundingClientRect();
+        canvas.width = rect.width;
+        canvas.height = rect.height;
         ctx.strokeStyle = '#7b5e3c';
         ctx.lineWidth = 2;
     }
 
-    resizeCanvas();
-    window.addEventListener("resize", resizeCanvas);
+    setCanvasSize();
+    window.addEventListener("resize", setCanvasSize);
 
     function getPos(e) {
         const rect = canvas.getBoundingClientRect();
-        let x, y;
-        if (e.touches) {
-            x = e.touches[0].clientX - rect.left;
-            y = e.touches[0].clientY - rect.top;
-        } else {
-            x = e.clientX - rect.left;
-            y = e.clientY - rect.top;
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
+        
+        if (e.touches && e.touches[0]) {
+            return {
+                x: (e.touches[0].clientX - rect.left) * scaleX,
+                y: (e.touches[0].clientY - rect.top) * scaleY
+            };
         }
-        return { x, y };
+        return {
+            x: (e.clientX - rect.left) * scaleX,
+            y: (e.clientY - rect.top) * scaleY
+        };
     }
 
     function startDraw(e) {
         e.preventDefault();
         isDrawing = true;
         const pos = getPos(e);
-        ctx.beginPath();
-        ctx.moveTo(pos.x, pos.y);
+        lastX = pos.x;
+        lastY = pos.y;
     }
 
     function draw(e) {
-        e.preventDefault();
         if (!isDrawing) return;
+        e.preventDefault();
+        
         const pos = getPos(e);
+        ctx.beginPath();
+        ctx.moveTo(lastX, lastY);
         ctx.lineTo(pos.x, pos.y);
         ctx.stroke();
+        
+        lastX = pos.x;
+        lastY = pos.y;
     }
 
     function endDraw() {
@@ -79,120 +90,52 @@ async function downloadInvitation() {
     const downloadBtn = document.querySelector('button');
     const originalBtnText = downloadBtn.textContent;
     
-    // Get username from the hidden div
     const userNameElement = document.querySelector('.user-name');
     const userName = userNameElement ? userNameElement.textContent.trim() : 'guest';
-    
-    // Create a wrapper for PDF
-    const wrapper = document.createElement('div');
-    wrapper.style.cssText = `
-        background-color: #ffffff;
-        padding: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 11in;
-        height: 8.5in;
-    `;
-    
-    const clone = element.cloneNode(true);
-    clone.style.cssText = `
-        background: #fff;
-        border-radius: 20px;
-        box-shadow: 0 10px 25px rgba(183, 140, 75, 0.15);
-        padding: 60px;
-        text-align: center;
-        width: 90%;
-        max-width: 1000px;
-        position: relative;
-        overflow: hidden;
-        margin: 0 auto;
-        border: 2px solid #d4b183;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        min-height: 7.5in;
-    `;
-    
-    // Adjust content spacing
-    const title = clone.querySelector('h2');
-    if (title) {
-        title.style.marginBottom = '40px';
-    }
-
-    const message = clone.querySelector('.message');
-    if (message) {
-        message.style.marginBottom = '40px';
-        message.style.fontSize = '24px';
-        message.style.lineHeight = '1.6';
-    }
-
-    const date = clone.querySelector('.date');
-    if (date) {
-        date.style.marginBottom = '20px';
-        date.style.fontSize = '22px';
-    }
-
-    const venue = clone.querySelector('.venue');
-    if (venue) {
-        venue.style.marginBottom = '40px';
-        venue.style.fontSize = '22px';
-    }
-
-    const closing = clone.querySelector('.closing');
-    if (closing) {
-        closing.style.marginBottom = '30px';
-        closing.style.fontSize = '20px';
-    }
-
-    const signatureLabel = clone.querySelector('.signature-label');
-    if (signatureLabel) {
-        signatureLabel.style.marginBottom = '20px';
-        signatureLabel.style.fontSize = '20px';
-    }
-    
-    // Hide the user-name div in the PDF
-    const hiddenName = clone.querySelector('.user-name');
-    if (hiddenName) {
-        hiddenName.remove();
-    }
-    
-    // Ensure signature background is solid
-    const signature = clone.querySelector('.signature');
-    if (signature) {
-        signature.style.background = '#ffffff';
-        signature.style.marginTop = '15px';
-        signature.style.border = '1px solid #d4b183';
-        signature.style.borderRadius = '8px';
-        signature.style.padding = '10px';
-        signature.style.width = '200px';
-        signature.style.margin = '0 auto';
-    }
-    
-    wrapper.appendChild(clone);
-    document.body.appendChild(wrapper);
-
-    const opt = {
-        margin: 0,
-        filename: `vigyaanrang-invitation-${userName}.pdf`,
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { 
-            scale: 2,
-            backgroundColor: '#ffffff',
-            useCORS: true
-        },
-        jsPDF: { 
-            unit: 'in', 
-            format: 'letter',
-            orientation: 'landscape'
-        }
-    };
 
     try {
         downloadBtn.textContent = 'Preparing...';
         downloadBtn.disabled = true;
+
+        // Create PDF
+        const pdf = new jsPDF({
+            orientation: 'landscape',
+            unit: 'px',
+            format: 'letter'
+        });
+
+        // Convert to canvas
+        const canvas = await html2canvas(element, {
+            scale: 1.2,
+            useCORS: true,
+            allowTaint: true,
+            backgroundColor: '#ffffff'
+        });
+
+        // Calculate dimensions
+        const imgWidth = 792; // 11 inches in pixels
+        const imgHeight = 612; // 8.5 inches in pixels
+        const aspectRatio = canvas.height / canvas.width;
         
-        await html2pdf().set(opt).from(wrapper).save();
+        // Scale down to fit better
+        let pdfWidth = imgWidth * 0.5; // Reduced scaling
+        let pdfHeight = pdfWidth * aspectRatio;
+        
+        if (pdfHeight > imgHeight * 0.5) {
+            pdfHeight = imgHeight * 0.5;
+            pdfWidth = pdfHeight / aspectRatio;
+        }
+        
+        // Calculate centering
+        const x = (imgWidth - pdfWidth) / 2;
+        const y = (imgHeight - pdfHeight) / 2;
+
+        // Add image to PDF
+        const imgData = canvas.toDataURL('image/jpeg', 1.0);
+        pdf.addImage(imgData, 'JPEG', 100, 80, pdfWidth, pdfHeight);
+        
+        // Save PDF
+        pdf.save(`vigyaanrang-invitation-${userName}.pdf`);
         
         downloadBtn.textContent = originalBtnText;
         downloadBtn.disabled = false;
@@ -200,7 +143,5 @@ async function downloadInvitation() {
         console.error('Error generating PDF:', error);
         downloadBtn.textContent = originalBtnText;
         downloadBtn.disabled = false;
-    } finally {
-        document.body.removeChild(wrapper);
     }
 }

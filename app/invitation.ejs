@@ -4,8 +4,8 @@
     <title>Vigyaanrang Invitation</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
-    <script src="/html2canvas.min.js"></script>
-    <script src="/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root {
           --primary-color: #b78c4b;
@@ -32,6 +32,7 @@
           display: flex;
           flex-direction: column;
           align-items: center;
+          justify-content: center;
           background: linear-gradient(45deg, var(--background-color), #fff6e6);
         }
 
@@ -44,7 +45,7 @@
           width: 100%;
           max-width: 800px;
           margin: 0 auto;
-          padding: 0 0 100px 0;
+          padding: 0;
         }
 
         .invitation-card {
@@ -157,7 +158,7 @@
 <body>
     <div class="invitation-wrapper">
         <div class="invitation-card">
-            <h2>Dear Esteemed Guest,</h2>
+            <h2>Dear <%= userName %>,</h2>
             <div class="message">
                 With heartfelt gratitude and immense joy, we invite you to be part of the
                 VIGYAANRANG FEST – a grand celebration of knowledge, creativity, and
@@ -172,6 +173,7 @@
         </div>
         <button onclick="downloadInvitation()">Download Invitation</button>
     </div>
+    <script>window.jsPDF = window.jspdf.jsPDF;</script>
     <script src="js/app.js"></script>
 </body>
 </html>

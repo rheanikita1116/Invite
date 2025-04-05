@@ -68,10 +68,14 @@ button:hover {
 /* Signature page styles */
 .signature-page {
   text-align: center;
+  width: 100%;
+  padding: 20px;
 }
 
 .signature-page .card {
   max-width: 420px;
+  margin: 0 auto;
+  position: relative;
 }
 
 .signature-page h1 {
@@ -84,6 +88,14 @@ button:hover {
   color: #333;
   font-size: 1rem;
   margin-bottom: 20px;
+}
+
+#signatureCanvas {
+  width: 100%;
+  max-width: 300px;
+  height: 150px;
+  touch-action: none;
+  margin: 0 auto;
 }
 
 canvas {
