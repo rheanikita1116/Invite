@@ -31,6 +31,9 @@ app.post("/submit-sign", (req, res) => {
 app.get("/invitation", (req, res) => {
   res.render("invitation", { userName, userSignature });
 });
+app.get("/record", (req, res) => {
+  res.render("record", { userName, userSignature });
+});
 
 app.listen(port, () => {
   console.log('Server running at : http://localhost:3000/');

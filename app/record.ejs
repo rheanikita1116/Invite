@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Record Your Reaction</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/record.css">
+</head>
+<body>
+  <div class="container">
+    <h2>Record Your Reaction</h2>
+
+    <video id="preview" autoplay muted playsinline></video>
+    
+    <div class="controls">
+      <button id="start">Start Recording</button>
+      <button id="stop" disabled>Stop Recording</button>
+      <button id="save" disabled>Save Recording</button>
+    </div>
+
+    <video id="playback" controls></video>
+  </div>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
